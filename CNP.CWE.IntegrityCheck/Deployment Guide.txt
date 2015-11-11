@@ -1,0 +1,31 @@
+﻿Deployemnt Steps:
+- Unzip the Deployment Package zip file
+- Locate CNP.CWE.IntegrityCheck.Ribbon.wsp and deploy WSP package using Add-SPSolution followed by Install-SPSolution
+- Locate CNP.CWE.CDA.wsp and deploy WSP package using Update-SPSolution
+
+- Login to SharePoint front end server
+- Create an IIS Web Application (CNP.CWE.IntegrityCheck) with following information:
+	- Create a web app on port 443 and 80 with a new URL for Integrity Check
+	- Enable HTTPS
+	- Assign appropriate certificate
+	- Add same host header binding for Integrity Check (DEV-IC.mycenterpointenergy.com for DEV and ACC-IC.mycenterpointenergy.com for UAT/Staging)
+	- Make sure Windows Authetication is turned ON for the web application in IIS
+	- Make sure the name of IIS app is "CNP.CWE.IntegrityCheck"
+
+- Go to system environment variables and add the following path in PATH variable:
+	C:\Program Files (x86)\IIS\Microsoft Web Deploy V3
+- Open Command prompt at the folder where deployment files are extracted.
+- Make sure the name of IIS web application is CNP.CWE.IntegrityCheck
+- Type this commend: CNP.CWE.IntegrityCheck.deploy.cmd /Y and hit enter
+- It will deploy the application
+
+- Deploy the CNP.CWE.IntegrityCheck Web Application in IIS on all SharePoint front ends one by one
+- Test the site by opening in browser https://DEV-IC.mycenterpointenergy.com or https://ACC-IC.mycenterpointenergy.com
+
+Post Deployment:
+- Create a custom property in root web AllProperties either using PoweShell or custom property manager tool:
+	Name: IntegrityCheckUrl
+	Value: <Integrity Check Site Url (https://DEV-IC.mycenterpointenergy.com)>
+
+- Go to Pages library and select Files tab. Select an item and click on Publish+ button in the ribbon. The integrity check dialog should appear.
+

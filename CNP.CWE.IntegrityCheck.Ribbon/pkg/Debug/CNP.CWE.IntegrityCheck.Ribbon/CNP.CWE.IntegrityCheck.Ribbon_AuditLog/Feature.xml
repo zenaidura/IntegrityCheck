@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns="http://schemas.microsoft.com/sharepoint/" AlwaysForceInstall="TRUE" Description="Deploys Audit Log for Integrity Check action logging" Id="cbf86d42-482c-4642-8560-2bd8cd2fa9dd" Scope="Web" Title="CenterPoint Energy Integrity Check Audit Log">
+  <ActivationDependencies>
+    <ActivationDependency FeatureId="c59df91e-2ae5-4798-964c-f003c45e8448" />
+  </ActivationDependencies>
+  <ElementManifests>
+    <ElementManifest Location="Integrity Check Audit Log\Elements.xml" />
+    <ElementFile Location="Integrity Check Audit Log\Schema.xml" />
+    <ElementManifest Location="Integrity Check Audit Log Instance\Elements.xml" />
+  </ElementManifests>
+</Feature>

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Solution xmlns="http://schemas.microsoft.com/sharepoint/" SolutionId="fc570194-342b-4708-99bf-73bade3ccb17" SharePointProductVersion="15.0">
+  <Assemblies>
+    <Assembly Location="CNP.CWE.IntegrityCheck.Ribbon.dll" DeploymentTarget="GlobalAssemblyCache" />
+  </Assemblies>
+  <FeatureManifests>
+    <FeatureManifest Location="CNP.CWE.IntegrityCheck.Ribbon_IntegrityCheckRibbon\Feature.xml" />
+    <FeatureManifest Location="CNP.CWE.IntegrityCheck.Ribbon_AuditLog\Feature.xml" />
+  </FeatureManifests>
+</Solution>

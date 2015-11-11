@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="fc570194-342b-4708-99bf-73bade3ccb17" solutionId="fc570194-342b-4708-99bf-73bade3ccb17" resetWebServer="false" sharePointProductVersion="15.0" name="CNP.CWE.IntegrityCheck.Ribbon" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="288a9646-f9e3-4b98-b2e5-72bafa38215e" />
+    <featureReference itemId="310edcbc-50cb-4631-9285-16677b9f6110" />
+  </features>
+</package>

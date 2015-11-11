@@ -1,0 +1,268 @@
+﻿<?xml version="1.0" encoding="utf-8"?><!--SPG:
+
+This HTML file has been associated with a SharePoint Master Page (.master file) carrying the same name.  While the files remain associated, you will not be allowed to edit the .master file, and any rename, move, or deletion operations will be reciprocated.
+
+To build the master page directly from this HTML file, simply edit the page as you normally would.  Use the Snippet Generator at http://avanade-dev:24734/sites/CNPSite/_layouts/15/ComponentHome.aspx?Url=http%3A%2F%2Favanade%2Ddev%3A24734%2Fsites%2FCNPSite%2F%5Fcatalogs%2Fmasterpage%2FCNPGallery%2FCNP%5FCorporate%2Emaster to create and customize useful SharePoint entities, then copy and paste them as HTML snippets into your HTML code.   All updates to this file will automatically sync to the associated Master Page.
+
+-->
+<!DOCTYPE html>
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+    <!--[if lte IE 8]>  <html class="ie lte-ie8" lang="en"> <![endif]-->
+    <!--[if IE 9]>      <html class="ie ie9" lang="en"> <![endif]-->
+    <!--[if !IE]>  <html lang="en"> <![endif]-->
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Expires" content="0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui" />
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+        <meta http-equiv="X-Frame-Options" content="sameorigin">
+        <meta property="og:image" content="/_catalogs/masterpage/CNPGallery/images/logo.png">
+
+        <!--CS: Start Page Head Contents Snippet-->
+        <!--SPM:<%@Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c"%>-->
+        <!--SPM:<%@Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c"%>-->
+        <!--SPM:<%@Register TagPrefix="wssucw" TagName="Welcome" Src="~/_controltemplates/15/Welcome.ascx"%>-->
+        <!--SPM:<%@Register TagPrefix="wssucmui" TagName="MUISelector" Src="~/_controltemplates/15/MUISelector.ascx"%>-->
+        <!--SPM:<%@Register TagPrefix="PublishingRibbon" TagName="PublishingRibbon" Src="~/_controltemplates/15/Ribbon.ascx"%>-->
+
+        <!--SPM:<%@Register Tagprefix="CNP" Namespace="CNP.CWE.CDA.Navigation.Controls" Assembly="CNP.CWE.CDA, Version=1.0.0.1, Culture=neutral, PublicKeyToken=8eceb42b316936e9"%>-->
+        <!--SPM:<%@Register Tagprefix="CNPIntegrityCheck" Namespace="CNP.CWE.IntegrityCheck.Ribbon.Controls" Assembly="CNP.CWE.IntegrityCheck.Ribbon, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8b24e274c859a16e"%>-->
+       <!--SPM:<%@Register TagPrefix="CNPuc" TagName="SignInControl" Src="~/_controltemplates/CNP.CWE.CDA/SignInControl.ascx" %>-->
+        <!--SPM:<%@Register TagPrefix="CNPac" TagName="WebTrends" Src="~/_controltemplates/CNP.CWE.CDA/WebTrends.ascx" %>-->
+        <!--SPM:<%@Register TagPrefix="CNPbc" TagName="GlobalAlert" Src="~/_controltemplates/CNP.CWE.CDA/GlobalAlert.ascx" %>-->
+        <!--SPM:<%@Register TagPrefix="CNPcc" TagName="Breadcrumbs" Src="~/_controltemplates/CNP.CWE.CDA/Breadcrumbs.ascx" %>-->
+       
+        <!--SPM:<SharePoint:DelegateControl runat="server" ControlId="TopNavigationDataSource" Id="topNavigationDelegate">-->
+        <!--SPM:<Template_Controls>-->
+        <!--SPM:<asp:SiteMapDataSource ShowStartingNode="False" SiteMapProvider="SPNavigationProvider" id="topSiteMap" runat="server" StartingNodeUrl="sid:1002"/>-->
+        <!--SPM:</Template_Controls>-->
+        <!--SPM:</SharePoint:DelegateControl>-->
+        <!--SID:00 -->
+        <!--MS:<SharePoint:RobotsMetaTag runat="server">-->
+        <!--ME:</SharePoint:RobotsMetaTag>-->
+        <!--MS:<SharePoint:PageTitle runat="server">-->
+        <!--MS:<asp:ContentPlaceHolder id="PlaceHolderPageTitle" runat="server">-->
+        <!--MS:<SharePoint:ProjectProperty Property="Title" runat="server">-->
+        <!--ME:</SharePoint:ProjectProperty>-->
+        <!--ME:</asp:ContentPlaceHolder>-->
+        <!--ME:</SharePoint:PageTitle>-->
+        <!--MS:<SharePoint:StartScript runat="server">-->
+        <!--ME:</SharePoint:StartScript>-->
+        <!--MS:<SharePoint:CssLink runat="server" Version="15">-->
+        <!--ME:</SharePoint:CssLink>-->
+        <!--MS:<SharePoint:CacheManifestLink runat="server">-->
+        <!--ME:</SharePoint:CacheManifestLink>-->
+        <!--MS:<SharePoint:PageRenderMode runat="server" RenderModeType="Standard">-->
+        <!--ME:</SharePoint:PageRenderMode>-->
+        <!--MS:<SharePoint:ScriptLink language="javascript" name="core.js" OnDemand="true" runat="server" Localizable="false">-->
+        <!--ME:</SharePoint:ScriptLink>-->
+        <!--MS:<SharePoint:ScriptLink language="javascript" name="menu.js" OnDemand="true" runat="server" Localizable="false">-->
+        <!--ME:</SharePoint:ScriptLink>-->
+        <!--MS:<SharePoint:ScriptLink language="javascript" name="callout.js" OnDemand="true" runat="server" Localizable="false">-->
+        <!--ME:</SharePoint:ScriptLink>-->
+        <!--MS:<SharePoint:ScriptLink language="javascript" name="sharing.js" OnDemand="true" runat="server" Localizable="false">-->
+        <!--ME:</SharePoint:ScriptLink>-->
+        <!--MS:<SharePoint:ScriptLink language="javascript" name="suitelinks.js" OnDemand="true" runat="server" Localizable="false">-->
+        <!--ME:</SharePoint:ScriptLink>-->
+
+        <!--MS:<SharePoint:ScriptLink language="javascript" name="SP.Runtime.js" OnDemand="false" runat="server" Localizable="false" ID="spRuntime" LoadAfterUI="true">-->
+        <!--ME:</SharePoint:ScriptLink>-->
+        <!--MS:<SharePoint:ScriptLink language="javascript" name="SP.js" OnDemand="false" runat="server" Localizable="false" ID="sp1" LoadAfterUI="true">-->
+        <!--ME:</SharePoint:ScriptLink>-->
+        <!--MS:<SharePoint:ScriptLink language="javascript" name="SP.Taxonomy.js" OnDemand="false" runat="server" Localizable="false" ID="spTaxonomy" LoadAfterUI="true">-->
+        <!--ME:</SharePoint:ScriptLink>-->
+
+        <!--MS:<SharePoint:CustomJSUrl runat="server">-->
+        <!--ME:</SharePoint:CustomJSUrl>-->
+        <!--MS:<SharePoint:SoapDiscoveryLink runat="server">-->
+        <!--ME:</SharePoint:SoapDiscoveryLink>-->
+        <!--MS:<SharePoint:CssRegistration Name="Themable/corev15.css" runat="server">-->
+        <!--ME:</SharePoint:CssRegistration>-->
+        <!--<SharePoint:CssRegistration Name="<% $SPUrl: ~SiteCollection/_catalogs/masterpage/CNPGallery/css/cnp-theme.css?rev=2015-08-24a%>" runat="server" After="corev15.css">-->
+        <!--</SharePoint:CssRegistration>-->
+        <!--<SharePoint:CssRegistration Name="<% $SPUrl: ~SiteCollection/_catalogs/masterpage/CNPGallery/css/cnp-theme-normalize.css?rev=2015-08-24a%>" runat="server" After="<% $SPUrl: ~SiteCollection/_catalogs/masterpage/CNPGallery/css/cnp-theme.css%>">-->
+        <!--</SharePoint:CssRegistration>-->
+        <!--<SharePoint:CssRegistration Name="<% $SPUrl: ~SiteCollection/_catalogs/masterpage/CNPGallery/css/jquery-ui.min.css%>" runat="server" After="<% $SPUrl: ~SiteCollection/_catalogs/masterpage/CNPGallery/css/jquery-ui.min.css%>">-->
+        <!--</SharePoint:CssRegistration>-->
+        <!--SPM:<SharePoint:SPShortcutIcon runat="server" IconUrl="/_catalogs/masterpage/CNPGallery/images/favicon.ico"/>-->
+        <!--CE: End Page Head Contents Snippet-->
+        <!--[if lt IE 9]>
+
+            <asp:Literal runat="server" text="<script src=&quot;"/>
+            <asp:Literal runat="server" text="<% $SPUrl:~sitecollection/_catalogs/masterpage/CNPGallery/js/html5shiv.min.js%>"></asp:Literal>
+            <asp:Literal runat="server" text="&quot;></script>"/>
+
+            <asp:Literal runat="server" text="<script src=&quot;"/>
+            <asp:Literal runat="server" text="<% $SPUrl:~sitecollection/_catalogs/masterpage/CNPGallery/js/respond.min.js%>"></asp:Literal>
+            <asp:Literal runat="server" text="&quot;></script>"/>
+
+        <![endif]-->
+
+        <script src="js/jquery-1.11.1.min.js">//<![CDATA[//]]></script>
+        <script src="js/jquery-ui.min.js">    //<![CDATA[//]]></script>
+        
+        <script src="js/jquery.jplayer.min.js">    //<![CDATA[//]]></script>
+        <script src="js/cnpaudio.js">            //<![CDATA[//]]></script>
+        <script src="js/cnp.js?rev=2015-08-24a">    //<![CDATA[//]]></script>
+        <script src="js/cnp.navigation.js?rev=2015-08-24a">    //<![CDATA[//]]></script>
+        <script src="js/cnp.sp.js?rev=2015-08-24a">    //<![CDATA[//]]></script>
+        <script src="js/AzureInsightMonitoring.js"></script>
+        <!--MS:<SharePoint:AjaxDelta id="DeltaPlaceHolderAdditionalPageHead" Container="false" runat="server">-->
+        <!--MS:<asp:ContentPlaceHolder id="PlaceHolderAdditionalPageHead" runat="server">-->
+        <!--ME:</asp:ContentPlaceHolder>-->
+        <!--MS:<SharePoint:DelegateControl runat="server" ControlId="AdditionalPageHead" AllowMultipleControls="true">-->
+        <!--ME:</SharePoint:DelegateControl>-->
+        <!--MS:<asp:ContentPlaceHolder id="PlaceHolderBodyAreaClass" runat="server">-->
+        <!--ME:</asp:ContentPlaceHolder>-->
+        <!--ME:</SharePoint:AjaxDelta>-->
+
+        <!--SPM:<CNPac:WebTrends id="WebTrends1" runat="server" />-->
+        <!--DC:CNP Energy-->
+
+        <!--[if gte mso 9]>
+            <xml>
+                <mso:CustomDocumentProperties>
+                    <mso:ContentType msdt:dt="string">Html Master Page</mso:ContentType>
+                    <mso:ContentTypeId msdt:dt="string">0x0101000F1C8B9E0EB4BE489F09807B2C53288F0054AD6EF48B9F7B45A142F8173F171BD10003D357F861E29844953D5CAA1D4D8A3A</mso:ContentTypeId>
+                    <mso:HtmlDesignAssociated msdt:dt="string">1</mso:HtmlDesignAssociated>
+                    <mso:HtmlDesignFromMaster msdt:dt="string">~catalogs/masterpage/CNPGallery/CNP_Corporate.html, ~catalogs/masterpage/CNPGallery/CNP_Corporate.html</mso:HtmlDesignFromMaster>
+                    <mso:HtmlDesignConversionSucceeded msdt:dt="string">True</mso:HtmlDesignConversionSucceeded>
+                    <mso:HtmlDesignStatusAndPreview msdt:dt="string">~catalogs/masterpage/CNPGallery/CNP_Corporate.html, Conversion successful.</mso:HtmlDesignStatusAndPreview>
+                </mso:CustomDocumentProperties>
+            </xml>
+        <![endif]-->
+    </head>
+    <body>
+         <!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PHN2RN"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>    //<![CDATA[//]]>
+    (function (w, d, s, l, i) {
+        w[l] = w[l] || []; w[l].push({
+            'gtm.start':
+            new Date().getTime(), event: 'gtm.js'
+        }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src = '//www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })
+    (window, document, 'script', 'dataLayer', 'GTM-PHN2RN');</script>
+<!-- End Google Tag Manager -->
+        <!--MS:<SharePoint:AjaxDelta id="DeltaSPWebPartManager" runat="server">-->
+        <!--MS:<WebPartPages:SPWebPartManager runat="server">-->
+        <!--ME:</WebPartPages:SPWebPartManager>-->
+        <!--ME:</SharePoint:AjaxDelta>-->
+
+        <!--CS: Start Ribbon Snippet-->
+        <!--SPM:<%@Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c"%>-->
+        <!--SPM:<%@Register Tagprefix="wssucw" TagName="Welcome" Src="~/_controltemplates/15/Welcome.ascx"%>-->
+        <!--MS:<SharePoint:SPSecurityTrimmedControl runat="server" HideFromSearchCrawler="true" EmitDiv="true">-->
+        <div id="TurnOnAccessibility" style="display:none" class="s4-notdlg noindex">
+            <a id="linkTurnOnAcc" href="#" class="ms-accessible ms-acc-button" onclick="SetIsAccessibilityFeatureEnabled(true);UpdateAccessibilityUI();document.getElementById('linkTurnOffAcc').focus();return false;">
+                <!--MS:<SharePoint:EncodedLiteral runat="server" text="&lt;%$Resources:wss,master_turnonaccessibility%&gt;" EncodeMethod="HtmlEncode">-->
+                <!--ME:</SharePoint:EncodedLiteral>-->
+            </a>
+        </div>
+        <div id="TurnOffAccessibility" style="display:none" class="s4-notdlg noindex">
+            <a id="linkTurnOffAcc" href="#" class="ms-accessible ms-acc-button" onclick="SetIsAccessibilityFeatureEnabled(false);UpdateAccessibilityUI();document.getElementById('linkTurnOnAcc').focus();return false;">
+                <!--MS:<SharePoint:EncodedLiteral runat="server" text="&lt;%$Resources:wss,master_turnoffaccessibility%&gt;" EncodeMethod="HtmlEncode">-->
+                <!--ME:</SharePoint:EncodedLiteral>-->
+            </a>
+        </div>
+        <!--ME:</SharePoint:SPSecurityTrimmedControl>-->
+        <div id="ms-designer-ribbon">
+            <!--SID:02 {Ribbon}-->
+            <!--PS: Start of READ-ONLY PREVIEW (do not modify) --><div class="DefaultContentBlock" style="background:rgb(0, 114, 198); color:white; width:100%; padding:8px; height:64px; overflow:hidden;">The SharePoint ribbon will be here when your file is either previewed on or applied to your site.</div><!--PE: End of READ-ONLY PREVIEW -->
+        </div>
+        
+        <<!--SPM:<CNPIntegrityCheck:SecurityTrimmedControl runat="server" />-->
+        <!--SPM:<CNPuc:SignInControl id="SignInControl1" runat="server" />-->
+
+        <!--CE: End Ribbon Snippet-->
+        <style id="antiClickjack">
+            body {
+                display: none !important;
+            }
+        </style>
+
+        <div id="cnp-body">
+
+            <noscript>
+                <p class="browser-notification">
+                    <strong>We’ve detected a problem with your browser settings.</strong><br />
+                    It’s possible that you don't have javascript enabled in your browser. Please <a href="http://enable-javascript.com/">enable javascript</a> in your browser settings to successfully view our site.
+                </p>
+            </noscript>
+
+            <script type="text/javascript">
+                
+                if (!navigator.cookieEnabled) {
+                    document.write("<p class='browser-notification'><strong>We’ve detected a problem with your browser settings.</strong><br />It's possible that you don't have cookies enabled in your browser. Please make sure your browser setting is <a href='http://www.wikihow.com/Enable-Cookies-in-Your-Internet-Web-Browser'>turned on for cookies</a> to select a service area and continue using our site.</p>");
+                }
+                var agentStr = navigator.userAgent;
+                var mode;
+                if (agentStr.indexOf("Trident/6.0") > -1) {
+                    if (agentStr.indexOf("MSIE 7.0") > -1)
+                        mode = "IE10 Compatibility View";
+                    else
+                        mode = "IE10";
+                }
+                else if (agentStr.indexOf("Trident/5.0") > -1) {
+                    if (agentStr.indexOf("MSIE 7.0") > -1)
+                        mode = "IE9 Compatibility View";
+                    else
+                        mode = "IE9";
+                }
+                else if (agentStr.indexOf("Trident/4.0") > -1) {
+                    if (agentStr.indexOf("MSIE 7.0") > -1)
+                        mode = "IE8 Compatibility View";
+                    else
+                        mode = "IE8";
+                }
+                else
+                    mode = "IE7";
+
+
+                if (document.documentMode <= 7) {
+                    document.write("<p class='browser-notification'><strong>The browser you are using is not currently supported.</strong><br />To get the best possible experience using our website, we recommend that you upgrade to a newer version of Safari, Firefox, Chrome, or Internet Explorer.</p>");
+                } else if ((mode == 'IE8 Compatibility View') || (mode == 'IE9 Compatibility View') || (mode == 'IE10 Compatibility View')) {
+                    document.write("<p class='browser-notification'><strong>We’ve detected a problem with your browser settings.</strong><br />It's possible your browser is set for compatibility mode and our site will not display correctly. Please <a href='https://support.microsoft.com/en-us/kb/2536204'>turn off compatibility</a> mode to successfully view our site.</p>");
+                }
+            </script>
+
+            <div id="s4-workspace" class="s4-nosetwidth">
+                <div id="s4-bodyContainer">
+                    <div class="cnp-header noindex">
+                        <!--MS:<SharePoint:AjaxDelta ID="DeltaPlaceHolderGlobalNavigation" IsMainContent="false" runat="server">-->
+                        <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderGlobalNavigation" runat="server" Visible="true">-->
+                        <!--SPM:<CNPbc:GlobalAlert id="GlobalAlert1" runat="server" />-->
+                        <!--SPM:<CNP:GlobalNavigation runat="server" ID="CNPGlobalNavigation"  ShowPrimary="true" ShowLanguageSwitchUrl="true" />-->
+                        <!--SPM:</asp:ContentPlaceHolder>-->
+                        <!--ME:</SharePoint:AjaxDelta>-->
+                    </div>
+                    <div class="cnp-breadcrumbs">
+                        <!--SPM:<SharePoint:AjaxDelta id="DeltaPlaceHolderPageTitleInTitleArea" runat="server">-->
+                        <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderPageTitleInTitleArea" runat="server" Visible="true">-->
+                        <!--SPM:<CNPcc:Breadcrumbs id="Breadcrumb1" runat="server" />-->
+                        <!--SPM:</asp:ContentPlaceHolder>-->
+                        <!--SPM:</SharePoint:AjaxDelta>-->
+                    </div>
+                    <div data-name="ContentPlaceHolderMain">
+                        <!--CS: Start PlaceHolderMain Snippet-->
+                        <!--SPM:<%@Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c"%>-->
+                        <!--MS:<SharePoint:AjaxDelta ID="DeltaPlaceHolderMain" IsMainContent="true" runat="server">-->
+                        <!--MS:<asp:ContentPlaceHolder ID="PlaceHolderMain" runat="server">-->
+                        <div class="DefaultContentBlock" style="border:medium black solid; background:yellow; color:black; margin:20px; padding:10px;">
+                            This div, which you should delete, represents the content area that your Page Layouts and pages will fill. Design your Master Page around this content placeholder.
+                        </div>
+                        <!--ME:</asp:ContentPlaceHolder>-->
+                        <!--ME:</SharePoint:AjaxDelta>-->
+                        <!--CE: End PlaceHolderMain Snippet-->
+                    </div>
+                    <div class="cnp-footer noindex">
+                        <!--SPM:<cnp:SuperFooter runat="server" ID="CNPFooterNav" RenderSuperFooterControl="false" ShowLanguageSwitchUrl="true"/>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

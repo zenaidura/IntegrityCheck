@@ -1,0 +1,229 @@
+﻿<%-- SPG:
+
+This HTML file has been associated with a SharePoint Master Page (.master file) carrying the same name.  While the files remain associated, you will not be allowed to edit the .master file, and any rename, move, or deletion operations will be reciprocated.
+
+To build the master page directly from this HTML file, simply edit the page as you normally would.  Use the Snippet Generator at https://acc-publishing.centerpointenergy.com/_layouts/15/ComponentHome.aspx?Url=https%3A%2F%2Facc%2Dpublishing%2Ecenterpointenergy%2Ecom%2F%5Fcatalogs%2Fmasterpage%2FCNPGallery%2FCNP%5FGenericMaster%2Emaster to create and customize useful SharePoint entities, then copy and paste them as HTML snippets into your HTML code.   All updates to this file will automatically sync to the associated Master Page.
+
+ --%>
+<%@Master language="C#"%>
+<%@Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c"%>
+<%@Register TagPrefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c"%>
+<%@Register TagPrefix="CNP" Namespace="CNP.CWE.CDA.Navigation.Controls" Assembly="CNP.CWE.CDA, Version=1.0.0.1, Culture=neutral, PublicKeyToken=8eceb42b316936e9"%>
+<%@Register Tagprefix="CNPIntegrityCheck" Namespace="CNP.CWE.IntegrityCheck.Ribbon.Controls" Assembly="CNP.CWE.IntegrityCheck.Ribbon, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8b24e274c859a16e"%>
+<%@Register TagPrefix="CNPuc" TagName="SignInControl" Src="~/_controltemplates/CNP.CWE.CDA/SignInControl.ascx" %>
+<%@Register TagPrefix="CNPwt" TagName="WebTrends" Src="~/_controltemplates/CNP.CWE.CDA/WebTrends.ascx" %>
+<%@Register TagPrefix="wssucmui" TagName="MUISelector" Src="~/_controltemplates/15/MUISelector.ascx"%>
+<%@Register TagPrefix="wssucw" TagName="Welcome" Src="~/_controltemplates/15/Welcome.ascx"%>
+<%@Register TagPrefix="PublishingRibbon" TagName="PublishingRibbon" Src="~/_controltemplates/15/Ribbon.ascx"%>
+<!DOCTYPE html >
+<SharePoint:SPHtmlTag runat="server" id="SPHtmlTag" dir="&lt;%$Resources:wss,multipages_direction_dir_value%&gt;">
+    <!--[if lte IE 8]>  <html class="ie lte-ie8" lang="en"> <![endif]-->
+    <!--[if IE 9]>      <html class="ie ie9" lang="en"> <![endif]-->
+    <!--[if !IE]>  <html lang="en"> <![endif]-->
+    <head runat="server">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Expires" content="0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui" />
+        <meta http-equiv="X-Frame-Options" content="sameorigin">
+        
+         <style type="text/css">
+
+     .cnp-footer {
+            position: relative;
+            bottom:0;
+            width:100%;
+        }
+             
+.layout-e .ms-webpart-titleText{
+  font-size: 18px !important;
+font-weight: bold;
+line-height: 22px;
+text-align: center !important;
+   
+}
+
+.layout-e .main-content{
+border-right:none !important;
+}
+
+        </style>
+        
+        
+        
+        
+        <SharePoint:DelegateControl runat="server" ControlId="TopNavigationDataSource" Id="topNavigationDelegate">
+        <Template_Controls>
+        <asp:SiteMapDataSource ShowStartingNode="False" SiteMapProvider="SPNavigationProvider" id="topSiteMap" runat="server" StartingNodeUrl="sid:1002" />
+        </Template_Controls>
+        </SharePoint:DelegateControl>
+        
+        <SharePoint:RobotsMetaTag runat="server">
+        </SharePoint:RobotsMetaTag>
+        <SharePoint:PageTitle runat="server">
+            <asp:ContentPlaceHolder id="PlaceHolderPageTitle" runat="server">
+                <SharePoint:ProjectProperty Property="Title" runat="server">
+                </SharePoint:ProjectProperty>
+            </asp:ContentPlaceHolder>
+        </SharePoint:PageTitle>
+        <SharePoint:StartScript runat="server">
+        </SharePoint:StartScript>
+        <SharePoint:CssLink runat="server" Version="15">
+        </SharePoint:CssLink>
+        <SharePoint:CacheManifestLink runat="server">
+        </SharePoint:CacheManifestLink>
+        <SharePoint:PageRenderMode runat="server" RenderModeType="Standard">
+        </SharePoint:PageRenderMode>
+        <SharePoint:ScriptLink language="javascript" name="core.js" OnDemand="true" runat="server" Localizable="false">
+        </SharePoint:ScriptLink>
+        <SharePoint:ScriptLink language="javascript" name="menu.js" OnDemand="true" runat="server" Localizable="false">
+        </SharePoint:ScriptLink>
+        <SharePoint:ScriptLink language="javascript" name="callout.js" OnDemand="true" runat="server" Localizable="false">
+        </SharePoint:ScriptLink>
+        <SharePoint:ScriptLink language="javascript" name="sharing.js" OnDemand="true" runat="server" Localizable="false">
+        </SharePoint:ScriptLink>
+        <SharePoint:ScriptLink language="javascript" name="suitelinks.js" OnDemand="true" runat="server" Localizable="false">
+        </SharePoint:ScriptLink>
+        <SharePoint:CustomJSUrl runat="server">
+        </SharePoint:CustomJSUrl>
+        <SharePoint:SoapDiscoveryLink runat="server">
+        </SharePoint:SoapDiscoveryLink>
+        <SharePoint:CssRegistration Name="Themable/corev15.css" runat="server">
+        </SharePoint:CssRegistration>
+        <!--<SharePoint:CssRegistration Name="<% $SPUrl: ~SiteCollection/_catalogs/masterpage/CNPGallery/css/cnp-theme.css%>" runat="server" After="corev15.css">-->
+        <!--</SharePoint:CssRegistration>-->
+        <!--<SharePoint:CssRegistration Name="<% $SPUrl: ~SiteCollection/_catalogs/masterpage/CNPGallery/css/cnp-theme-normalize.css%>" runat="server" After="<% $SPUrl: ~SiteCollection/_catalogs/masterpage/CNPGallery/css/cnp-theme.css%>">-->
+        <!--</SharePoint:CssRegistration>-->
+        <!--<SharePoint:CssRegistration Name="<% $SPUrl: ~SiteCollection/_catalogs/masterpage/CNPGallery/css/self-id.css%>" runat="server" After="<% $SPUrl: ~SiteCollection/_catalogs/masterpage/CNPGallery/css/jquery-ui.min.css%>">-->
+        <!--</SharePoint:CssRegistration>-->
+        
+        <!--[if lt IE 9]>
+
+    <asp:Literal runat="server" text="<script src=&#34;"/>
+    <asp:Literal runat="server" text="<% $SPUrl:~sitecollection/_catalogs/masterpage/CNPGallery/js/html5shiv.min.js%>"></asp:Literal>
+    <asp:Literal runat="server" text="&#34;></script>"/>
+
+    <asp:Literal runat="server" text="<script src=&#34;"/>
+    <asp:Literal runat="server" text="<% $SPUrl:~sitecollection/_catalogs/masterpage/CNPGallery/js/respond.min.js%>"></asp:Literal>
+    <asp:Literal runat="server" text="&#34;></script>"/>
+
+    <![endif]-->
+        <script src="/_catalogs/masterpage/CNPGallery/js/jquery-1.11.1.min.js">//<![CDATA[
+        
+        //]]></script>
+        <script src="/_catalogs/masterpage/CNPGallery/js/jquery-ui.min.js">//<![CDATA[    
+        
+        //]]></script>
+        <script src="/_catalogs/masterpage/CNPGallery/js/cnp.js">//<![CDATA[
+        
+        //]]></script>
+        <script src="/_catalogs/masterpage/CNPGallery/js/cnp.sp.js">//<![CDATA[
+        
+        //]]></script>
+<script src="/_catalogs/masterpage/CNPGallery/js/cnp.navigation.js">//<![CDATA[            
+        //]]></script>
+        <script src="/_catalogs/masterpage/CNPGallery/js/SelfId.js">//<![CDATA[    
+        
+        //]]></script>
+     
+        <SharePoint:AjaxDelta id="DeltaPlaceHolderAdditionalPageHead" Container="false" runat="server">
+            <asp:ContentPlaceHolder id="PlaceHolderAdditionalPageHead" runat="server">
+            </asp:ContentPlaceHolder>
+            <SharePoint:DelegateControl runat="server" ControlId="AdditionalPageHead" AllowMultipleControls="true">
+            </SharePoint:DelegateControl>
+            <asp:ContentPlaceHolder id="PlaceHolderBodyAreaClass" runat="server">
+            </asp:ContentPlaceHolder>
+        </SharePoint:AjaxDelta>
+        <CNPwt:WebTrends id="WebTrends1" runat="server" />
+        
+        </head>
+    <body onhashchange="if (typeof(_spBodyOnHashChange) != 'undefined') _spBodyOnHashChange();"><SharePoint:SPClientIDGenerator runat="server" ServerControlID="DeltaPlaceHolderMain;DeltaPlaceHolderPageTitleInTitleArea;DeltaPlaceHolderUtilityContent" /><SharePoint:ImageLink runat="server" /><SharePoint:SharePointForm onsubmit="if (typeof(_spFormOnSubmitWrapper) != 'undefined') {return _spFormOnSubmitWrapper();} else {return true;}" runat="server"><asp:ScriptManager id="ScriptManager" runat="server" EnablePageMethods="false" EnablePartialRendering="true" EnableScriptGlobalization="false" EnableScriptLocalization="true" />
+        <SharePoint:AjaxDelta id="DeltaSPWebPartManager" runat="server">
+            <WebPartPages:SPWebPartManager runat="server">
+            </WebPartPages:SPWebPartManager>
+        </SharePoint:AjaxDelta>
+
+        <div id="ms-designer-ribbon">
+            <div id="TurnOnAccessibility" style="display:none" class="s4-notdlg noindex">
+                <a id="linkTurnOnAcc" href="#" class="ms-accessible ms-acc-button" onclick="SetIsAccessibilityFeatureEnabled(true);UpdateAccessibilityUI();document.getElementById('linkTurnOffAcc').focus();return false;">
+                    <SharePoint:EncodedLiteral runat="server" text="&lt;%$Resources:wss,master_turnonaccessibility%&gt;" EncodeMethod="HtmlEncode">
+                    </SharePoint:EncodedLiteral>
+                </a>
+            </div>
+            <div id="TurnOffAccessibility" style="display:none" class="s4-notdlg noindex">
+                <a id="linkTurnOffAcc" href="#" class="ms-accessible ms-acc-button" onclick="SetIsAccessibilityFeatureEnabled(false);UpdateAccessibilityUI();document.getElementById('linkTurnOnAcc').focus();return false;">
+                    <SharePoint:EncodedLiteral runat="server" text="&lt;%$Resources:wss,master_turnoffaccessibility%&gt;" EncodeMethod="HtmlEncode">
+                    </SharePoint:EncodedLiteral>
+                </a>
+            </div>
+            <PublishingRibbon:PublishingRibbon runat="server" />
+            
+        </div>
+        <CNPIntegrityCheck:SecurityTrimmedControl runat="server" />
+        <CNPuc:SignInControl id="SignInControl1" runat="server" />
+         <style id="antiClickjack">body{display:none !important;}</style>
+
+        <div id="cnp-body">
+            <div id="s4-workspace" class="s4-nosetwidth">
+                <div id="s4-bodyContainer">
+					<div class="cnp-header">
+                        <SharePoint:AjaxDelta ID="DeltaPlaceHolderGlobalNavigation" IsMainContent="false" runat="server">
+                            <asp:ContentPlaceHolder ID="PlaceHolderGlobalNavigation" runat="server" Visible="true">
+                                <div class="global-navbar">
+                                    <div class="container fit-to-edge">
+                                        <div class="simple-search">                                            
+                                            <input class="navbar-search" type="search" name="search" placeholder="Search" id="global-search-desktop_csr_sbox" onkeypress="return triggerEnterKeyPress(event);" />
+                                            <input class="navbar-search-submit" type="submit" name="search-submit" onclick="SubmitQueryDesktopRoot(); return false;" />
+                                        </div>
+                                    </div>
+                                    <nav class="desktop-secondary">
+                                        <div class="row">
+                                            <div class="col-md-9 col-md-offset-3">
+                                                <div class="row">
+                                                    <div class="col-md-9 change-service-area">
+                                                        <p></p>
+                                                    </div>
+                                                    <div class="col-md-3 personalize">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </nav>
+                                </div>
+                                <nav class="navbar yamm navbar-default" role="navigation" id="primary-navigation" style="padding-bottom:20px;">
+                                    <div class="wrapper">
+                                        <div class="navbar-header">
+
+
+                                            <a class="navbar-brand" href="http://acc-www.centerpointenergy.com/en-us" style="margin-top: 20px;">
+                                                <img class="img-responsive" src="/_catalogs/masterpage/CNPGallery/images/logo.png" alt="CenterPoint Energy logo" /></a>
+                                        </div>
+                                    </div>
+                                </nav>
+
+
+                            </asp:ContentPlaceHolder>
+                        </SharePoint:AjaxDelta>
+                    </div>
+					
+					
+                    <SharePoint:AjaxDelta id="DeltaPlaceHolderMain" IsMainContent="true" runat="server">
+                        <asp:ContentPlaceHolder ID="PlaceHolderMain" runat="server">
+                            <div class="DefaultContentBlock" style="border:medium black solid; background:yellow; color:black;">
+                    This area will be filled in by content you create in your page layouts.
+                
+                            
+                            </div>
+                        </asp:ContentPlaceHolder>
+                    </SharePoint:AjaxDelta>
+                    
+                </div>
+                
+            </div>
+        </div>
+<div class="cnp-footer noindex">
+                    <cnp:SuperFooter runat="server" ID="CNPFooterNav" RenderSuperFooterControl="false" />
+                </div>
+    <SharePoint:AjaxDelta id="DeltaFormDigest" BlockElement="true" runat="server"><asp:ContentPlaceHolder id="PlaceHolderFormDigest" runat="server"><SharePoint:formdigest runat="server" /></asp:ContentPlaceHolder></SharePoint:AjaxDelta></SharePoint:SharePointForm><SharePoint:AjaxDelta id="DeltaPlaceHolderUtilityContent" runat="server"><asp:ContentPlaceHolder id="PlaceHolderUtilityContent" runat="server" /></SharePoint:AjaxDelta><asp:ContentPlaceHolder id="PlaceHolderTitleAreaClass" Visible="False" runat="server" /><asp:ContentPlaceHolder id="PlaceHolderTitleBreadcrumb" Visible="False" runat="server" /><asp:ContentPlaceHolder id="PlaceHolderGlobalNavigationSiteMap" Visible="False" runat="server" /><asp:ContentPlaceHolder id="PlaceHolderSearchArea" Visible="False" runat="server" /><asp:ContentPlaceHolder id="PlaceHolderLeftNavBar" Visible="False" runat="server" /><asp:ContentPlaceHolder id="PlaceHolderHorizontalNav" Visible="False" runat="server" /><asp:ContentPlaceHolder id="PlaceHolderTopNavBar" Visible="False" runat="server" /><asp:ContentPlaceHolder id="PlaceHolderLeftNavBarDataSource" Visible="False" runat="server" /><asp:ContentPlaceHolder id="PlaceHolderCalendarNavigator" Visible="False" runat="server" /><asp:ContentPlaceHolder id="PlaceHolderLeftActions" Visible="False" runat="server" /><asp:ContentPlaceHolder id="PlaceHolderLeftNavBarTop" Visible="False" runat="server" /><asp:ContentPlaceHolder id="PlaceHolderSiteName" Visible="False" runat="server" /><asp:ContentPlaceHolder id="PlaceHolderPageTitleInTitleArea" Visible="False" runat="server" /><asp:ContentPlaceHolder id="PlaceHolderPageDescription" Visible="False" runat="server" /><asp:ContentPlaceHolder id="PlaceHolderPageImage" Visible="False" runat="server" /><asp:ContentPlaceHolder id="PlaceHolderTitleLeftBorder" Visible="False" runat="server" /><asp:ContentPlaceHolder id="PlaceHolderMiniConsole" Visible="False" runat="server" /><asp:ContentPlaceHolder id="PlaceHolderTitleRightMargin" Visible="False" runat="server" /><asp:ContentPlaceHolder id="PlaceHolderTitleAreaSeparator" Visible="False" runat="server" /><asp:ContentPlaceHolder id="PlaceHolderNavSpacer" Visible="False" runat="server" /><asp:ContentPlaceHolder id="PlaceHolderLeftNavBarBorder" Visible="False" runat="server" /><asp:ContentPlaceHolder id="PlaceHolderBodyLeftBorder" Visible="False" runat="server" /><asp:ContentPlaceHolder id="PlaceHolderBodyRightMargin" Visible="False" runat="server" /><asp:ContentPlaceHolder id="WSSDesignConsole" Visible="False" runat="server" /><asp:ContentPlaceHolder id="SPNavigation" Visible="False" runat="server" /><asp:ContentPlaceHolder id="PlaceHolderQuickLaunchTop" Visible="False" runat="server" /><asp:ContentPlaceHolder id="PlaceHolderQuickLaunchBottom" Visible="False" runat="server" /></body>
+</SharePoint:SPHtmlTag>

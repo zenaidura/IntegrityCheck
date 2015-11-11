@@ -1,0 +1,838 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <!--Pages Library-->
+  <CustomAction Id="5a36dfd7-d00a-40d2-bcfd-befa4bf8f1de.IntegrityCheck"
+                RegistrationType="List"
+                RegistrationId="850"
+                Location="CommandUI.Ribbon"
+                Sequence="10001"
+                Rights="EditListItems"                
+                Title="Publish+">
+    <CommandUIExtension>
+      <!-- 
+      Update the UI definitions below with the controls and the command actions
+      that you want to enable for the custom action.
+      -->
+      <CommandUIDefinitions>
+        <CommandUIDefinition Location="Ribbon.Documents.Manage.Controls._children">
+          <Button Id="Ribbon.Documents.Manage.IntegrityCheckButton"
+                  Alt="Publish+"
+                  Sequence="100"
+                  Command="Invoke_IntegrityCheckButtonRequest"
+                  LabelText="Publish+"
+                  TemplateAlias="o1"
+                  Image32by32="~sitecollection/Style Library/Images/integritycheck-32.png"
+                  Image16by16="~sitecollection/Style Library/Images/integritycheck-16.png"
+                  ToolTipTitle="Publish+"
+                  ToolTipDescription="Check selected items or pages and display a report of unpublished/draft assets or pending dynamic content. Optionally publish/approve draft or pending content"/>
+        </CommandUIDefinition>
+      </CommandUIDefinitions>
+      <CommandUIHandlers>
+        <CommandUIHandler Command="Invoke_IntegrityCheckButtonRequest"
+                          CommandAction="javascript:
+                          function integrityCheckCallback(dialogResult, returnValue){
+                            SP.UI.Notify.addNotification('Finished content integrity check on selected pages');
+                            SP.UI.ModalDialog.RefreshPage(SP.UI.DialogResult.Cancel);
+                          }
+                          var ctx = SP.ClientContext.get_current();
+                          var site = ctx.get_site();
+                          var web = ctx.get_web();
+                          var rootWeb = site.get_rootWeb();                          
+                          var props;
+                          
+                          ctx.load(site);
+                          ctx.load(rootWeb);
+                          ctx.load(web);
+                          
+                          ctx.executeQueryAsync(function (sender, args){
+                            var siteId = site.get_id();
+                            var webId = web.get_id();
+                            props = rootWeb.get_allProperties();
+
+                            var ctx = SP.ClientContext.get_current();
+                            ctx.load(props);
+                            console.log('Loading web properties...');
+                          
+                            ctx.executeQueryAsync(function (sender, args){
+                              var allProperties = props.get_fieldValues();
+                              console.log('Retrieving Integrity Check resources...');
+                              console.log(allProperties);
+                              var icURL = allProperties['integritycheckurl'] || allProperties['IntegrityCheckUrl'];
+                              console.log('URL: ' + icURL);
+                              
+                              if(icURL) {
+                                console.log('Opening Integrity Check');
+                                runIntegrityCheck(icURL, ctx, webId, siteId);
+                              }
+                              else {
+                                SP.UI.Notify.addNotification('Error occurred. Please contanct your administrator');
+                              }
+                            },
+                          
+                            function (sender, args){
+                                SP.UI.Notify.addNotification('Site Error! Please contanct your administrator');
+                                console.log('Site Error! Please contanct your administrator. More Info: ' + args);
+                            });
+                          },
+                          function (sender, args){
+                              SP.UI.Notify.addNotification('Server Error! Please contanct your administrator');
+                              console.log('Server Error! Please contanct your administrator. More Info: ' + args);
+                          });
+
+                          function runIntegrityCheck(icURL, ctx, webId, siteId) {
+                            var items = SP.ListOperation.Selection.getSelectedItems(ctx);
+                            var selectedItems = '';
+                            var k;
+              
+                            for (k in items){
+                              selectedItems += items[k].id + ',';
+                            }
+                            
+                            var url = icURL + '/home?site={'+ siteId + '}&amp;web={'+ webId +'}&amp;items=' + selectedItems + '&amp;list=' + SP.ListOperation.Selection.getSelectedList() + '&amp;hostUrl=' + _spPageContextInfo.siteAbsoluteUrl + '&amp;user=' + _spPageContextInfo.userId + '&amp;loc=' + _spPageContextInfo.currentCultureName;
+                            var options = {              
+                              url: url,
+                              title: 'Integrity Check',
+                              allowMaximize: false,
+                              showClose: true,
+                              width: 1200,
+                              height: 1000,
+                              dialogReturnValueCallback: integrityCheckCallback 
+                            };
+              
+                            SP.UI.ModalDialog.showModalDialog(options);
+                          }"
+                          
+                          EnabledScript="javascript:
+                          function enableIntegrityCheck()
+                          {
+                            var items = SP.ListOperation.Selection.getSelectedItems();
+                            return (items.length > 0);
+                          }
+                          enableIntegrityCheck();"/>
+      </CommandUIHandlers>
+    </CommandUIExtension >
+  </CustomAction>
+
+  <!--Publishing Page-->
+  <CustomAction Id="515e4f86-1b37-4eb7-bff0-6372c390bcf1.PageIntegrityCheck"
+                Location="CommandUI.Ribbon"
+                Sequence="10010"
+                Rights="EditListItems"
+                Title="Publish+">
+    <CommandUIExtension>
+      <!-- 
+      Update the UI definitions below with the controls and the command actions
+      that you want to enable for the custom action.
+      -->
+      <CommandUIDefinitions>
+        <CommandUIDefinition Location="Ribbon.WikiPageTab.PubPageActions.Controls._children">
+          <Button Id="Ribbon.WikiPageTab.PubPageActions.PageIntegrityCheckButton"
+                  Alt="Request Draft Check"
+                  Sequence="100"
+                  Command="Invoke_PageIntegrityCheckButtonRequest"
+                  LabelText="Publish+"
+                  TemplateAlias="o1"
+                  Image32by32="/Style Library/Images/integritycheck-32.png"
+                  Image16by16="/Style Library/Images/integritycheck-16.png"
+                  ToolTipTitle="Draft Check"
+                  ToolTipDescription="Check selected items or pages and display a report of unpublished/draft assets or pending dynamic content. Optionally publish/approve draft or pending content"/>
+        </CommandUIDefinition>
+      </CommandUIDefinitions>
+      <CommandUIHandlers>
+        <CommandUIHandler Command="Invoke_PageIntegrityCheckButtonRequest"
+                          CommandAction="javascript:
+                          function integrityCheckCallback(dialogResult, returnValue){
+                            SP.UI.Notify.addNotification('Finished draft content check on selected pages');
+                            SP.UI.ModalDialog.RefreshPage(SP.UI.DialogResult.Cancel);
+                          }
+
+                          var ctx = SP.ClientContext.get_current();
+                          var site = ctx.get_site();
+                          var web = ctx.get_web();
+                          var rootWeb = site.get_rootWeb();                          
+                          var props;
+                          
+                          ctx.load(site);
+                          ctx.load(rootWeb);
+                          ctx.load(web);
+                          
+                          ctx.executeQueryAsync(function (sender, args){
+                            var siteId = site.get_id();
+                            var webId = web.get_id();
+                            props = rootWeb.get_allProperties();
+
+                            var ctx = SP.ClientContext.get_current();
+                            ctx.load(props);
+                            console.log('Loading web properties...');
+                          
+                            ctx.executeQueryAsync(function (sender, args){
+                              var allProperties = props.get_fieldValues();
+                              console.log('Retrieving Integrity Check resources...');
+                              console.log(allProperties);
+                              var icURL = allProperties['integritycheckurl'] || allProperties['IntegrityCheckUrl'];
+                              console.log('URL: ' + icURL);
+                              
+                              if(icURL) {
+                                console.log('Opening Integrity Check');
+                                runIntegrityCheck(icURL, ctx, webId, siteId);
+                              }
+                              else {
+                                SP.UI.Notify.addNotification('Error occurred. Please contanct your administrator');
+                              }
+                            },
+                          
+                            function (sender, args){
+                                SP.UI.Notify.addNotification('Site Error! Please contanct your administrator');
+                                console.log('Site Error! Please contanct your administrator. More Info: ' + args);
+                            });
+                          },
+                          function (sender, args){
+                              SP.UI.Notify.addNotification('Server Error! Please contanct your administrator');
+                              console.log('Server Error! Please contanct your administrator. More Info: ' + args);
+                          });
+
+                          function runIntegrityCheck(icURL, ctx, webId, siteId) {
+                             var url = icURL + '/home?site={'+ siteId + '}&amp;web={'+ webId +'}&amp;items=' + _spPageContextInfo.pageItemId + '&amp;list=' + _spPageContextInfo.pageListId + '&amp;hostUrl=' + _spPageContextInfo.siteAbsoluteUrl + '&amp;user=' + _spPageContextInfo.userId + '&amp;loc=' + _spPageContextInfo.currentCultureName;
+
+                             var options = {              
+                              url: url,
+                              title: 'Integrity Check',
+                              allowMaximize: false,
+                              showClose: true,
+                              width: 1200,
+                              height: 1000,
+                              dialogReturnValueCallback: integrityCheckCallback };
+              
+                            SP.UI.ModalDialog.showModalDialog(options);
+                          }">
+        </CommandUIHandler>
+      </CommandUIHandlers>
+    </CommandUIExtension >
+  </CustomAction>
+
+  <!--CNP Lists-->
+  <CustomAction Id="772e28aa-117a-4eb4-bec1-8d0d1a5e5d3d.IntegrityCheck"
+                RegistrationType="ContentType"
+                RegistrationId="0x010019301F767B05F34D8015A423D10D3D82"
+                Location="CommandUI.Ribbon"
+                Rights="EditListItems"
+                Sequence="10002"
+                Title="Publish+">
+    <CommandUIExtension>
+      <!-- 
+      Update the UI definitions below with the controls and the command actions
+      that you want to enable for the custom action.
+      -->
+      <CommandUIDefinitions>
+        <CommandUIDefinition Location="Ribbon.ListItem.Manage.Controls._children">
+          <Button Id="Ribbon.ListItem.Manage.IntegrityCheckButton"
+                  Alt="Publish+"
+                  Sequence="100"
+                  Command="Invoke_IntegrityCheckButtonRequest"
+                  LabelText="Publish+"
+                  TemplateAlias="o1"
+                  Image32by32="~sitecollection/Style Library/Images/integritycheck-32.png"
+                  Image16by16="~sitecollection/Style Library/Images/integritycheck-16.png"
+                  ToolTipTitle="Publish+"
+                  ToolTipDescription="Check selected items or pages and display a report of unpublished/draft assets or pending dynamic content. Optionally publish/approve draft or pending content"/>
+        </CommandUIDefinition>
+      </CommandUIDefinitions>
+      <CommandUIHandlers>
+        <CommandUIHandler Command="Invoke_IntegrityCheckButtonRequest"
+                          CommandAction="javascript:
+                          function integrityCheckCallback(dialogResult, returnValue){
+                            SP.UI.Notify.addNotification('Finished draft content check on selected pages');
+                            SP.UI.ModalDialog.RefreshPage(SP.UI.DialogResult.Cancel);
+                          }
+                          var ctx = SP.ClientContext.get_current();
+                          var site = ctx.get_site();
+                          var web = ctx.get_web();
+                          var rootWeb = site.get_rootWeb();                          
+                          var props;
+                          
+                          ctx.load(site);
+                          ctx.load(rootWeb);
+                          ctx.load(web);
+                          
+                          ctx.executeQueryAsync(function (sender, args){
+                            var siteId = site.get_id();
+                            var webId = web.get_id();
+                            props = rootWeb.get_allProperties();
+
+                            var ctx = SP.ClientContext.get_current();
+                            ctx.load(props);
+                            console.log('Loading web properties...');
+                          
+                            ctx.executeQueryAsync(function (sender, args){
+                              var allProperties = props.get_fieldValues();
+                              console.log('Retrieving Integrity Check resources...');
+                              console.log(allProperties);
+                              var icURL = allProperties['integritycheckurl'] || allProperties['IntegrityCheckUrl'];
+                              console.log('URL: ' + icURL);
+                              
+                              if(icURL) {
+                                console.log('Opening Integrity Check');
+                                runIntegrityCheck(icURL, ctx, webId, siteId);
+                              }
+                              else {
+                                SP.UI.Notify.addNotification('Error occurred. Please contanct your administrator');
+                              }
+                            },
+                          
+                            function (sender, args){
+                                SP.UI.Notify.addNotification('Site Error! Please contanct your administrator');
+                                console.log('Site Error! Please contanct your administrator. More Info: ' + args);
+                            });
+                          },
+                          function (sender, args){
+                              SP.UI.Notify.addNotification('Server Error! Please contanct your administrator');
+                              console.log('Server Error! Please contanct your administrator. More Info: ' + args);
+                          });
+                          
+                          function runIntegrityCheck(icURL, ctx, webId, siteId) {
+                            var items = SP.ListOperation.Selection.getSelectedItems(ctx);
+                            var selectedItems = '';
+                            var k;
+              
+                            for (k in items){
+                              selectedItems += items[k].id + ',';
+                            }
+                            var url = icURL + '/home?site={'+ siteId + '}&amp;web={'+ webId +'}&amp;items=' + selectedItems + '&amp;list=' + SP.ListOperation.Selection.getSelectedList() + '&amp;hostUrl=' + _spPageContextInfo.siteAbsoluteUrl + '&amp;user=' + _spPageContextInfo.userId + '&amp;loc=' + _spPageContextInfo.currentCultureName; 
+                            var options = {              
+                              url: url,
+                              title: 'Integrity Check',
+                              allowMaximize: false,
+                              showClose: true,
+                              width: 1200,
+                              height: 1000,
+                              dialogReturnValueCallback: integrityCheckCallback };
+              
+                            SP.UI.ModalDialog.showModalDialog(options);
+                          }"
+                          
+                          EnabledScript="javascript:
+                          function enableIntegrityCheck()
+                          {
+                            var items = SP.ListOperation.Selection.getSelectedItems();
+                            return (items.length > 0);
+                          }
+                          enableIntegrityCheck();"/>
+      </CommandUIHandlers>
+    </CommandUIExtension >
+  </CustomAction>
+
+  <!--CNP Events-->
+  <CustomAction Id="7f321eff-77de-4810-8c33-b207aca84060.IntegrityCheck"
+                RegistrationType="ContentType"
+                RegistrationId="0x010200731A9EA547ADA346AB23DEE907E894D5"
+                Location="CommandUI.Ribbon"
+                Rights="EditListItems"
+                Sequence="10002"
+                Title="Publish+">
+    <CommandUIExtension>
+      <!-- 
+      Update the UI definitions below with the controls and the command actions
+      that you want to enable for the custom action.
+      -->
+      <CommandUIDefinitions>
+        <CommandUIDefinition Location="Ribbon.ListItem.Manage.Controls._children">
+          <Button Id="Ribbon.ListItem.Manage.IntegrityCheckButton"
+                  Alt="Publish+"
+                  Sequence="100"
+                  Command="Invoke_IntegrityCheckButtonRequest"
+                  LabelText="Publish+"
+                  TemplateAlias="o1"
+                  Image32by32="~sitecollection/Style Library/Images/integritycheck-32.png"
+                  Image16by16="~sitecollection/Style Library/Images/integritycheck-16.png"
+                  ToolTipTitle="Publish+"
+                  ToolTipDescription="Check selected items or pages and display a report of unpublished/draft assets or pending dynamic content. Optionally publish/approve draft or pending content"/>
+        </CommandUIDefinition>
+      </CommandUIDefinitions>
+      <CommandUIHandlers>
+        <CommandUIHandler Command="Invoke_IntegrityCheckButtonRequest"
+                          CommandAction="javascript:
+                          function integrityCheckCallback(dialogResult, returnValue){
+                            SP.UI.Notify.addNotification('Finished draft content check on selected pages');
+                            SP.UI.ModalDialog.RefreshPage(SP.UI.DialogResult.Cancel);
+                          }
+                          
+                          var ctx = SP.ClientContext.get_current();
+                          var site = ctx.get_site();
+                          var web = ctx.get_web();
+                          var rootWeb = site.get_rootWeb();                          
+                          var props;
+                          
+                          ctx.load(site);
+                          ctx.load(rootWeb);
+                          ctx.load(web);
+                          
+                          ctx.executeQueryAsync(function (sender, args){
+                            var siteId = site.get_id();
+                            var webId = web.get_id();
+                            props = rootWeb.get_allProperties();
+
+                            var ctx = SP.ClientContext.get_current();
+                            ctx.load(props);
+                            console.log('Loading web properties...');
+                          
+                            ctx.executeQueryAsync(function (sender, args){
+                              var allProperties = props.get_fieldValues();
+                              console.log('Retrieving Integrity Check resources...');
+                              console.log(allProperties);
+                              var icURL = allProperties['integritycheckurl'] || allProperties['IntegrityCheckUrl'];
+                              console.log('URL: ' + icURL);
+                              
+                              if(icURL) {
+                                console.log('Opening Integrity Check');
+                                runIntegrityCheck(icURL, ctx, webId, siteId);
+                              }
+                              else {
+                                SP.UI.Notify.addNotification('Error occurred. Please contanct your administrator');
+                              }
+                            },
+                          
+                            function (sender, args){
+                                SP.UI.Notify.addNotification('Site Error! Please contanct your administrator');
+                                console.log('Site Error! Please contanct your administrator. More Info: ' + args);
+                            });
+                          },
+                          function (sender, args){
+                              SP.UI.Notify.addNotification('Server Error! Please contanct your administrator');
+                              console.log('Server Error! Please contanct your administrator. More Info: ' + args);
+                          });
+                          
+                          function runIntegrityCheck(icURL, ctx, webId, siteId) {
+                            var items = SP.ListOperation.Selection.getSelectedItems(ctx);
+                            var selectedItems = '';
+                            var k;
+              
+                            for (k in items){
+                              selectedItems += items[k].id + ',';
+                            }
+                            var url = icURL + '/home?site={'+ siteId + '}&amp;web={'+ webId +'}&amp;items=' + selectedItems + '&amp;list=' + SP.ListOperation.Selection.getSelectedList() + '&amp;hostUrl=' + _spPageContextInfo.siteAbsoluteUrl + '&amp;user=' + _spPageContextInfo.userId + '&amp;loc=' + _spPageContextInfo.currentCultureName;
+                            var options = {              
+                              url: url,
+                              title: 'Integrity Check',
+                              allowMaximize: false,
+                              showClose: true,
+                              width: 1200,
+                              height: 1000,
+                              dialogReturnValueCallback: integrityCheckCallback };
+              
+                            SP.UI.ModalDialog.showModalDialog(options);
+                          }"
+                          
+                          EnabledScript="javascript:
+                          function enableIntegrityCheck()
+                          {
+                            var items = SP.ListOperation.Selection.getSelectedItems();
+                            return (items.length > 0);
+                          }
+                          enableIntegrityCheck();"/>
+      </CommandUIHandlers>
+    </CommandUIExtension >
+  </CustomAction>
+  
+  <!--CNP Links-->
+  <CustomAction Id="3cf78f3c-511f-47c5-9263-17c07807b6f2.IntegrityCheck"
+                RegistrationType="ContentType"
+                RegistrationId="0x0105008EAC01816C1B3245B5BB023FED88E754"
+                Location="CommandUI.Ribbon"
+                Sequence="10002"
+                Rights="EditListItems"
+                Title="Publish+">
+    <CommandUIExtension>
+      <!-- 
+      Update the UI definitions below with the controls and the command actions
+      that you want to enable for the custom action.
+      -->
+      <CommandUIDefinitions>
+        <CommandUIDefinition Location="Ribbon.ListItem.Manage.Controls._children">
+          <Button Id="Ribbon.ListItem.Manage.IntegrityCheckButton"
+                  Alt="Publish+"
+                  Sequence="100"
+                  Command="Invoke_IntegrityCheckButtonRequest"
+                  LabelText="Publish+"
+                  TemplateAlias="o1"
+                  Image32by32="~sitecollection/Style Library/Images/integritycheck-32.png"
+                  Image16by16="~sitecollection/Style Library/Images/integritycheck-16.png"
+                  ToolTipTitle="Publish+"
+                  ToolTipDescription="Check selected items or pages and display a report of unpublished/draft assets or pending dynamic content. Optionally publish/approve draft or pending content"/>
+        </CommandUIDefinition>
+      </CommandUIDefinitions>
+      <CommandUIHandlers>
+        <CommandUIHandler Command="Invoke_IntegrityCheckButtonRequest"
+                          CommandAction="javascript:
+                          function integrityCheckCallback(dialogResult, returnValue){
+                            SP.UI.Notify.addNotification('Finished draft content check on selected pages');
+                            SP.UI.ModalDialog.RefreshPage(SP.UI.DialogResult.Cancel);
+                          }
+                          
+                          var ctx = SP.ClientContext.get_current();
+                          var site = ctx.get_site();
+                          var web = ctx.get_web();
+                          var rootWeb = site.get_rootWeb();                          
+                          var props;
+                          
+                          ctx.load(site);
+                          ctx.load(rootWeb);
+                          ctx.load(web);
+                          
+                          ctx.executeQueryAsync(function (sender, args){
+                            var siteId = site.get_id();
+                            var webId = web.get_id();
+                            props = rootWeb.get_allProperties();
+
+                            var ctx = SP.ClientContext.get_current();
+                            ctx.load(props);
+                            console.log('Loading web properties...');
+                          
+                            ctx.executeQueryAsync(function (sender, args){
+                              var allProperties = props.get_fieldValues();
+                              console.log('Retrieving Integrity Check resources...');
+                              console.log(allProperties);
+                              var icURL = allProperties['integritycheckurl'] || allProperties['IntegrityCheckUrl'];
+                              console.log('URL: ' + icURL);
+                              
+                              if(icURL) {
+                                console.log('Opening Integrity Check');
+                                runIntegrityCheck(icURL, ctx, webId, siteId);
+                              }
+                              else {
+                                SP.UI.Notify.addNotification('Error occurred. Please contanct your administrator');
+                              }
+                            },
+                          
+                            function (sender, args){
+                                SP.UI.Notify.addNotification('Site Error! Please contanct your administrator');
+                                console.log('Site Error! Please contanct your administrator. More Info: ' + args);
+                            });
+                          },
+                          function (sender, args){
+                              SP.UI.Notify.addNotification('Server Error! Please contanct your administrator');
+                              console.log('Server Error! Please contanct your administrator. More Info: ' + args);
+                          });
+                          
+                          function runIntegrityCheck(icURL, ctx, webId, siteId) {
+                            var items = SP.ListOperation.Selection.getSelectedItems(ctx);
+                            var selectedItems = '';
+                            var k;
+              
+                            for (k in items){
+                              selectedItems += items[k].id + ',';
+                            }
+                            var url = icURL + '/home?site={'+ siteId + '}&amp;web={'+ webId +'}&amp;items=' + selectedItems + '&amp;list=' + SP.ListOperation.Selection.getSelectedList() + '&amp;hostUrl=' + _spPageContextInfo.siteAbsoluteUrl + '&amp;user=' + _spPageContextInfo.userId + '&amp;loc=' + _spPageContextInfo.currentCultureName;
+                            var options = {              
+                              url: url,
+                              title: 'Integrity Check',
+                              allowMaximize: false,
+                              showClose: true,
+                              width: 1200,
+                              height: 1000,
+                              dialogReturnValueCallback: integrityCheckCallback };
+              
+                            SP.UI.ModalDialog.showModalDialog(options);
+                          }"
+                          
+                          EnabledScript="javascript:
+                          function enableIntegrityCheck()
+                          {
+                            var items = SP.ListOperation.Selection.getSelectedItems();
+                            return (items.length > 0);
+                          }
+                          enableIntegrityCheck();"/>
+      </CommandUIHandlers>
+    </CommandUIExtension >
+  </CustomAction>
+
+  <!--CNP List Display Forms-->
+  <CustomAction Id="9a07d3df-3c6a-423b-a7bc-8d8706721b1b.IntegrityCheck"
+                RegistrationType="ContentType"
+                RegistrationId="0x010019301F767B05F34D8015A423D10D3D82"
+                Location="CommandUI.Ribbon.DisplayForm"
+                Sequence="10002"
+                Rights="EditListItems"
+                Title="Publish+">
+    <CommandUIExtension>
+      <!-- 
+      Update the UI definitions below with the controls and the command actions
+      that you want to enable for the custom action.
+      -->
+      <CommandUIDefinitions>
+        <CommandUIDefinition Location="Ribbon.ListForm.Display.Manage.Controls._children">
+          <Button Id="Ribbon.ListForm.Display.Manage.IntegrityCheckButton"
+                  Alt="Publish+"
+                  Sequence="100"
+                  Command="Invoke_IntegrityCheckButtonRequestDispForm"
+                  LabelText="Publish+"
+                  TemplateAlias="o1"
+                  Image32by32="~sitecollection/Style Library/Images/integritycheck-32.png"
+                  Image16by16="~sitecollection/Style Library/Images/integritycheck-16.png"
+                  ToolTipTitle="Publish+"
+                  ToolTipDescription="Check selected items or pages and display a report of unpublished/draft assets or pending dynamic content. Optionally publish/approve draft or pending content"/>
+        </CommandUIDefinition>
+      </CommandUIDefinitions>
+      <CommandUIHandlers>
+        <CommandUIHandler Command="Invoke_IntegrityCheckButtonRequestDispForm"
+                          CommandAction="javascript:
+                          function integrityCheckCallbackDispForm(dialogResult, returnValue){
+                            SP.UI.Notify.addNotification('Finished draft content check on selected pages');
+                            SP.UI.ModalDialog.RefreshPage(SP.UI.DialogResult.Cancel);
+                          }
+                          
+                          var ctx = SP.ClientContext.get_current();
+                          var site = ctx.get_site();
+                          var web = ctx.get_web();
+                          var rootWeb = site.get_rootWeb();                          
+                          var props;
+                          
+                          ctx.load(site);
+                          ctx.load(rootWeb);
+                          ctx.load(web);
+                          
+                          ctx.executeQueryAsync(function (sender, args){
+                            var siteId = site.get_id();
+                            var webId = web.get_id();
+                            props = rootWeb.get_allProperties();
+
+                            var ctx = SP.ClientContext.get_current();
+                            ctx.load(props);
+                            console.log('Loading web properties...');
+                          
+                            ctx.executeQueryAsync(function (sender, args){
+                              var allProperties = props.get_fieldValues();
+                              console.log('Retrieving Integrity Check resources...');
+                              console.log(allProperties);
+                              var icURL = allProperties['integritycheckurl'] || allProperties['IntegrityCheckUrl'];
+                              console.log('URL: ' + icURL);
+                              
+                              if(icURL) {
+                                console.log('Opening Integrity Check');
+                                runIntegrityCheck(icURL, ctx, webId, siteId);
+                              }
+                              else {
+                                SP.UI.Notify.addNotification('Error occurred. Please contanct your administrator');
+                              }
+                            },
+                          
+                            function (sender, args){
+                                SP.UI.Notify.addNotification('Site Error! Please contanct your administrator');
+                                console.log('Site Error! Please contanct your administrator. More Info: ' + args);
+                            });
+                          },
+                          function (sender, args){
+                              SP.UI.Notify.addNotification('Server Error! Please contanct your administrator');
+                              console.log('Server Error! Please contanct your administrator. More Info: ' + args);
+                          });
+                          
+                          function runIntegrityCheck(icURL, ctx, webId, siteId) {
+                            var url = icURL + '/home?site={'+ siteId + '}&amp;web={'+ webId +'}&amp;items={ItemId}&amp;list={ListId}&amp;hostUrl=' + _spPageContextInfo.siteAbsoluteUrl + '&amp;user=' + _spPageContextInfo.userId + '&amp;loc=' + _spPageContextInfo.currentCultureName;
+                            var options = {              
+                              url: url,
+                              title: 'Integrity Check',
+                              allowMaximize: false,
+                              showClose: true,
+                              width: 1200,
+                              height: 1000,
+                              dialogReturnValueCallback: integrityCheckCallbackDispForm };
+              
+                            SP.UI.ModalDialog.showModalDialog(options);
+                          }"/>
+      </CommandUIHandlers>
+    </CommandUIExtension >
+  </CustomAction>
+
+  <!--CNP Event Display Forms-->
+  <CustomAction Id="d0da44ba-6d28-4214-9e55-b0d0894486e7.IntegrityCheck"
+                RegistrationType="ContentType"
+                RegistrationId="0x010200731A9EA547ADA346AB23DEE907E894D5"
+                Location="CommandUI.Ribbon.DisplayForm"
+                Sequence="10002"
+                Rights="EditListItems"
+                Title="Publish+">
+    <CommandUIExtension>
+      <!-- 
+      Update the UI definitions below with the controls and the command actions
+      that you want to enable for the custom action.
+      -->
+      <CommandUIDefinitions>
+        <CommandUIDefinition Location="Ribbon.ListForm.Display.Manage.Controls._children">
+          <Button Id="Ribbon.ListForm.Display.Manage.IntegrityCheckButton"
+                  Alt="Publish+"
+                  Sequence="100"
+                  Command="Invoke_IntegrityCheckButtonRequest"
+                  LabelText="Publish+"
+                  TemplateAlias="o1"
+                  Image32by32="~sitecollection/Style Library/Images/integritycheck-32.png"
+                  Image16by16="~sitecollection/Style Library/Images/integritycheck-16.png"
+                  ToolTipTitle="Publish+"
+                  ToolTipDescription="Check selected items or pages and display a report of unpublished/draft assets or pending dynamic content. Optionally publish/approve draft or pending content"/>
+        </CommandUIDefinition>
+      </CommandUIDefinitions>
+      <CommandUIHandlers>
+        <CommandUIHandler Command="Invoke_IntegrityCheckButtonRequest"
+                          CommandAction="javascript:
+                          function integrityCheckCallback(dialogResult, returnValue){
+                            SP.UI.Notify.addNotification('Finished draft content check on selected pages');
+                            SP.UI.ModalDialog.RefreshPage(SP.UI.DialogResult.Cancel);
+                          }
+                          
+                          var ctx = SP.ClientContext.get_current();
+                          var site = ctx.get_site();
+                          var web = ctx.get_web();
+                          var rootWeb = site.get_rootWeb();                          
+                          var props;
+                          
+                          ctx.load(site);
+                          ctx.load(rootWeb);
+                          ctx.load(web);
+                          
+                          ctx.executeQueryAsync(function (sender, args){
+                            var siteId = site.get_id();
+                            var webId = web.get_id();
+                            props = rootWeb.get_allProperties();
+
+                            var ctx = SP.ClientContext.get_current();
+                            ctx.load(props);
+                            console.log('Loading web properties...');
+                          
+                            ctx.executeQueryAsync(function (sender, args){
+                              var allProperties = props.get_fieldValues();
+                              console.log('Retrieving Integrity Check resources...');
+                              console.log(allProperties);
+                              var icURL = allProperties['integritycheckurl'] || allProperties['IntegrityCheckUrl'];
+                              console.log('URL: ' + icURL);
+                              
+                              if(icURL) {
+                                console.log('Opening Integrity Check');
+                                runIntegrityCheck(icURL, ctx, webId, siteId);
+                              }
+                              else {
+                                SP.UI.Notify.addNotification('Error occurred. Please contanct your administrator');
+                              }
+                            },
+                          
+                            function (sender, args){
+                                SP.UI.Notify.addNotification('Site Error! Please contanct your administrator');
+                                console.log('Site Error! Please contanct your administrator. More Info: ' + args);
+                            });
+                          },
+                          function (sender, args){
+                              SP.UI.Notify.addNotification('Server Error! Please contanct your administrator');
+                              console.log('Server Error! Please contanct your administrator. More Info: ' + args);
+                          });
+                          
+                          function runIntegrityCheck(icURL, ctx, webId, siteId) {
+                            var url = icURL + '/home?site={'+ siteId + '}&amp;web={'+ webId +'}&amp;items={ItemId}&amp;list={ListId}&amp;hostUrl=' + _spPageContextInfo.siteAbsoluteUrl + '&amp;user=' + _spPageContextInfo.userId + '&amp;loc=' + _spPageContextInfo.currentCultureName;
+                            var options = {              
+                              url: url,
+                              title: 'Integrity Check',
+                              allowMaximize: false,
+                              showClose: true,
+                              width: 1200,
+                              height: 1000,
+                              dialogReturnValueCallback: integrityCheckCallbackDispForm };
+              
+                            SP.UI.ModalDialog.showModalDialog(options);
+                          }"/>
+      </CommandUIHandlers>
+    </CommandUIExtension >
+  </CustomAction>
+
+  <!--CNP Link Display Forms-->
+  <CustomAction Id="b15cf104-0a7f-4343-a942-fe5fced81ebf.IntegrityCheck"
+                RegistrationType="ContentType"
+                RegistrationId="0x0105008EAC01816C1B3245B5BB023FED88E754"
+                Location="CommandUI.Ribbon.DisplayForm"
+                Sequence="10002"
+                Rights="EditListItems"
+                Title="Publish+">
+    <CommandUIExtension>
+      <!-- 
+      Update the UI definitions below with the controls and the command actions
+      that you want to enable for the custom action.
+      -->
+      <CommandUIDefinitions>
+        <CommandUIDefinition Location="Ribbon.ListForm.Display.Manage.Controls._children">
+          <Button Id="Ribbon.ListForm.Display.Manage.IntegrityCheckButton"
+                  Alt="Publish+"
+                  Sequence="100"
+                  Command="Invoke_IntegrityCheckButtonRequest"
+                  LabelText="Publish+"
+                  TemplateAlias="o1"
+                  Image32by32="~sitecollection/Style Library/Images/integritycheck-32.png"
+                  Image16by16="~sitecollection/Style Library/Images/integritycheck-16.png"
+                  ToolTipTitle="Publish+"
+                  ToolTipDescription="Check selected items or pages and display a report of unpublished/draft assets or pending dynamic content. Optionally publish/approve draft or pending content"/>
+        </CommandUIDefinition>
+      </CommandUIDefinitions>
+      <CommandUIHandlers>
+        <CommandUIHandler Command="Invoke_IntegrityCheckButtonRequest"
+                          CommandAction="javascript:
+                          function integrityCheckCallback(dialogResult, returnValue){
+                            SP.UI.Notify.addNotification('Finished draft content check on selected pages');
+                            SP.UI.ModalDialog.RefreshPage(SP.UI.DialogResult.Cancel);
+                          }
+                          
+                          var ctx = SP.ClientContext.get_current();
+                          var site = ctx.get_site();
+                          var web = ctx.get_web();
+                          var rootWeb = site.get_rootWeb();                          
+                          var props;
+                          
+                          ctx.load(site);
+                          ctx.load(rootWeb);
+                          ctx.load(web);
+                          
+                          ctx.executeQueryAsync(function (sender, args){
+                            var siteId = site.get_id();
+                            var webId = web.get_id();
+                            props = rootWeb.get_allProperties();
+
+                            var ctx = SP.ClientContext.get_current();
+                            ctx.load(props);
+                            console.log('Loading web properties...');
+                          
+                            ctx.executeQueryAsync(function (sender, args){
+                              var allProperties = props.get_fieldValues();
+                              console.log('Retrieving Integrity Check resources...');
+                              console.log(allProperties);
+                              var icURL = allProperties['integritycheckurl'] || allProperties['IntegrityCheckUrl'];
+                              console.log('URL: ' + icURL);
+                              
+                              if(icURL) {
+                                console.log('Opening Integrity Check');
+                                runIntegrityCheck(icURL, ctx, webId, siteId);
+                              }
+                              else {
+                                SP.UI.Notify.addNotification('Error occurred. Please contanct your administrator');
+                              }
+                            },
+                          
+                            function (sender, args){
+                                SP.UI.Notify.addNotification('Site Error! Please contanct your administrator');
+                                console.log('Site Error! Please contanct your administrator. More Info: ' + args);
+                            });
+                          },
+                          function (sender, args){
+                              SP.UI.Notify.addNotification('Server Error! Please contanct your administrator');
+                              console.log('Server Error! Please contanct your administrator. More Info: ' + args);
+                          });
+                          
+                          function runIntegrityCheck(icURL, ctx, webId, siteId) {
+                            var url = icURL + '/home?site={'+ siteId + '}&amp;web={'+ webId +'}&amp;items={ItemId}&amp;list={ListId}&amp;hostUrl=' + _spPageContextInfo.siteAbsoluteUrl + '&amp;user=' + _spPageContextInfo.userId + '&amp;loc=' + _spPageContextInfo.currentCultureName;
+                            var options = {              
+                              url: url,
+                              title: 'Integrity Check',
+                              allowMaximize: false,
+                              showClose: true,
+                              width: 1200,
+                              height: 1000,
+                              dialogReturnValueCallback: integrityCheckCallbackDispForm };
+              
+                            SP.UI.ModalDialog.showModalDialog(options);
+                          }"/>
+      </CommandUIHandlers>
+    </CommandUIExtension >
+  </CustomAction>
+</Elements>

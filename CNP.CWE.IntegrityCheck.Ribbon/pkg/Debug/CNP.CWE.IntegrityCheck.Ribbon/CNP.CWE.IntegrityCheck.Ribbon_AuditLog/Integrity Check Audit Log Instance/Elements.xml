@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <ListInstance Title="Integrity Check Audit Log" OnQuickLaunch="TRUE" TemplateType="100" Url="Lists/Integrity Check Audit Log" Description="List to store actions updates executed via Integrity Check" Hidden="FALSE"></ListInstance>
+</Elements>

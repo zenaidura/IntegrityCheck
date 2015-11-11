@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{45471982-BB38-415F-A038-C342DF3257F4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CNP.CWE.IntegrityCheck.Ribbon</RootNamespace>
+    <AssemblyName>CNP.CWE.IntegrityCheck.Ribbon</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetOfficeVersion>15.0</TargetOfficeVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{C1CDDADD-2546-481F-9697-4EA41081F2FC};{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SandboxedSolution>False</SandboxedSolution>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Web.CommandUI, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Common Files\microsoft shared\Web Server Extensions\15\ISAPI\Microsoft.Web.CommandUI.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.SharePoint" />
+    <Reference Include="Microsoft.SharePoint.Client.ServerRuntime" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SecurityTrimmedControl.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Features\AuditLog\AuditLog.feature">
+      <FeatureId>{310edcbc-50cb-4631-9285-16677b9f6110}</FeatureId>
+    </None>
+    <None Include="Features\IntegrityCheckRibbon\IntegrityCheckRibbon.feature">
+      <FeatureId>{288a9646-f9e3-4b98-b2e5-72bafa38215e}</FeatureId>
+    </None>
+    <None Include="Images\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{b5f434dd-b9d4-45d1-ad7d-d3e68041a277}</SharePointProjectItemId>
+    </None>
+    <None Include="Integrity Check Audit Log\Integrity Check Audit Log Instance\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{b2668f5b-7bf3-4085-ac96-8ebb71c0a414}</SharePointProjectItemId>
+    </None>
+    <None Include="Integrity Check Audit Log\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{baf4f4cf-8c9d-47ce-95e6-51c90eb0ce0a}</SharePointProjectItemId>
+    </None>
+    <None Include="key.snk" />
+    <None Include="Manual Updates\CNP_Corporate.master" />
+    <None Include="Manual Updates\CNP_Generic.master" />
+    <None Include="Manual Updates\CNP_GenericMaster.master" />
+    <None Include="Manual Updates\CNP_Residential.master" />
+    <None Include="Manual Updates\CNP_System.master" />
+    <None Include="Package\Package.package">
+      <PackageId>{fc570194-342b-4708-99bf-73bade3ccb17}</PackageId>
+    </None>
+    <None Include="Package\Package.Template.xml">
+      <DependentUpon>Package.package</DependentUpon>
+    </None>
+    <None Include="RibbonActions\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{4549b286-7be6-4d80-a995-824d86238b07}</SharePointProjectItemId>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Features\AuditLog\AuditLog.Template.xml">
+      <DependentUpon>AuditLog.feature</DependentUpon>
+    </Content>
+    <Content Include="Features\IntegrityCheckRibbon\IntegrityCheckRibbon.Template.xml">
+      <DependentUpon>IntegrityCheckRibbon.feature</DependentUpon>
+    </Content>
+    <Content Include="Images\Elements.xml" />
+    <Content Include="Images\integritycheck-16.png" />
+    <Content Include="Images\integritycheck-32.png" />
+    <Content Include="Images\viewdraft16x16.png" />
+    <Content Include="Images\viewdraft32x32.png" />
+    <Content Include="Integrity Check Audit Log\Elements.xml" />
+    <Content Include="Integrity Check Audit Log\Integrity Check Audit Log Instance\Elements.xml" />
+    <Content Include="Integrity Check Audit Log\Schema.xml" />
+    <Content Include="Manual Updates\CNP_Corporate.html" />
+    <Content Include="Manual Updates\CNP_Generic.html" />
+    <Content Include="Manual Updates\CNP_GenericMaster.html" />
+    <Content Include="Manual Updates\CNP_Residential.html" />
+    <Content Include="Manual Updates\CNP_System.html" />
+    <Content Include="RibbonActions\Elements.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(VSToolsPath)\SharePointTools\Microsoft.VisualStudio.SharePoint.targets" Condition="'$(VSToolsPath)' != ''" />
+</Project>

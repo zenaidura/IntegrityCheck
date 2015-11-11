@@ -1,0 +1,269 @@
+﻿@{
+    ViewBag.Title = "Integrity Check";
+}
+@section featured {
+}
+<div id="draftContentMain" class="draftContentMain">
+    <div>
+        <span id="greeting"></span>
+        <span id="message" data-bind="text: statusMessage">Initializing...</span>
+        <i class="fa fa-spinner fa-pulse fa-1x fa-fw margin-bottom" style="font-size:1.2em;" data-bind="visible: !allPagesProcessed()"></i>
+        <span data-bind="visible: allPagesProcessed()" style="display: none;">
+            <a href="javascript;void()" data-bind="click: refreshAll">Refresh All</a>
+        </span>
+    </div>
+
+    <div data-bind="visible: isLoaded" style="display: none;">
+        <div id="pagesAccordion" class="draft-files-container" data-bind="foreach: { data: pages, as: 'page' }">
+            <div class="page-header" data-bind="css: {'warning-status': page.hasPublishedVersion(), 'error-status': !page.hasPublishedVersion(), 'info-status': page.approvedOrPublishInFuture() }">
+                <h3>
+                    <table width="100%">
+                        <tr style="line-height: inherit">
+                            <td width="50%">
+                                <span data-bind="text: page.pageTitle"></span>
+                                <span style="display: none;" data-bind="visible: page.draftFilesLoaded">
+                                    <span><i class="fa fa-check"></i></span>
+                                    <a data-bind="attr: { href: page.url }" target="_blank"><i class="fa fa-info-circle"></i></a>
+                                </span>
+                            </td>
+                            <td align="left" width="200px">
+                                <span data-bind="text: publishingStatus"></span>
+                            </td>
+                            <td align="left">
+                                <span data-bind="text: version"></span>
+                            </td>
+                            <td align="left" width="200px">
+                                <span data-bind="text: scheduledDate"></span>
+                            </td>
+                            <td align="right">
+                                <span style="display: none;" data-bind="visible: page.draftFilesLoaded">
+                                    <button type="button" data-bind="click: page.refresh" style="float:right"><i class="fa fa-refresh"></i></button>
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </h3>
+            </div>
+
+            <div class="section draft-content" >
+                <div class="error-status" style="display: none;" data-bind="visible: page.error() != null">
+                    <span class="message-error" data-bind="text: page.error()"></span>
+                </div>
+
+                <div style="display: none;" data-bind="visible: page.draftFilesLoaded">
+                    <table cellspacing="0" cellpadding="0" width="100%" height="100%" border="0">
+                        <tbody>
+                            <tr style="vertical-align:top;">
+                                <td>
+                                    <div>
+                                        <input type="button" data-bind="click: page.publishPage, visible: !page.isPublished()" value="Publish / Approve this content" style="display:none;" />
+                                        <span style="color:green;" class="ms-descriptiontext" data-bind="visible: page.isPublished()" style="display:none;">This content is published!</span>
+                                    </div>
+                                    <br />
+                                    <div>
+                                        <span class="ms-descriptiontext" data-bind="html: page.resultsMessage"></span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- ko if: page.draftFiles().length > 0 -->
+                <div class="related-content" data-bind="fadeVisible: page.draftFilesLoaded" style="display: none;">
+
+                    <h4>Related Content:</h4>
+                    <table width="100%" cellspacing="0" class="ms-descriptiontext">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <label style="font-size: smaller" data-bind="attr: {'for': 'chkSelectAll_' + page.id }">
+                                        <input type="checkbox" data-bind="attr: {'id': 'chkSelectAll_' + page.id }, click: page.selectAll, checked: page.selected" />
+                                        Select all related content
+                                    </label>
+                                </td>
+                                <td style="text-align:right">
+                                    <input type="button" name="publish" title="Publish" value="Publish / Approve Selected Items" data-bind="click: page.publishSelectedAssets" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table cellspacing="0" cellpadding="0" width="100%" height="100%" border="0">
+                        <tbody>
+                            <tr>
+                                <td align="center" id="bodyText" valign="top">
+                                    <table width="100%" border="0" cellspacing="0" class="ms-descriptiontext">
+                                        <tbody data-bind="foreach: { data: page.typesOfContent }">
+                                            <!-- ko if: page.draftFiles.index.type()[$data] != null -->
+                                            <!-- Content Type Heading-->
+                                            <tr class="category">
+                                                <td>
+                                                    <h4><i data-bind="attr: { 'class': page.getIcon($data) }"></i> <span data-bind="text: $data+'s'"></span></h4>
+                                                </td>
+                                            </tr>
+                                            <!-- Content Type -->
+                                            <tr>
+                                                <td>
+                                                    <div class="draftContentMain">
+                                                        <div class="contentAccordion" data-bind="foreach: { data: page.draftFiles.index.type()[$data], as: 'content', beforeRemove: page.fadeIn }">
+                                                            <div>
+                                                                <div>
+                                                                    <table width="100%" border="0" cellspacing="0" class="ms-descriptiontext">
+                                                                        <tbody>
+                                                                            <tr class="page-info" data-bind="css: {'warning-status': hasPublishedVersion, 'error-status': !hasPublishedVersion || type == 'Broken Link', 'info-status': publishInFuture() }">
+                                                                                <!-- ko if: type() != 'Broken Link' -->
+                                                                                <td>
+                                                                                    <input type="checkbox" data-bind="attr: {value: url, datatype: type}, checked: selected, click: select" />
+                                                                                </td>
+                                                                                <!-- /ko -->
+                                                                                <td width="50%" style="padding-left:10px;">
+                                                                                    <!-- ko if: type() != 'Broken Link' -->
+                                                                                    <span data-bind="text: title, attr: { 'title': 'Audience: ' + audience + '\x0AService Area: ' + serviceArea}"></span>
+                                                                                    <a data-bind="attr: { href: url }" target="_blank"><i class="fa fa-info-circle"></i></a>
+                                                                                    <i class="fa fa-pencil-square-o" style="display: none" data-bind="visible: checkedOutTo != '', attr: {'title': 'Checked out to: ' + checkedOutTo}"></i>
+                                                                                    <!-- /ko -->
+                                                                                    <!-- ko if: type() == 'Broken Link' -->
+                                                                                    <i data-bind="attr: { 'class': statusIcon + ' message-error' }"></i>
+                                                                                    <a disabled="disabled" style="text-decoration: none" data-bind=""><span data-bind="text: title"></span></a>
+                                                                                    <!-- /ko -->
+                                                                                </td>
+                                                                                <!-- ko if: type() != 'Broken Link' -->
+                                                                                <td align="left" width="180px" style="min-width:140px;">
+                                                                                    <span data-bind="text: publishingStatus"></span>
+                                                                                </td>
+                                                                                <td align="left" width="40px" style="min-width:40px;">
+                                                                                    <span data-bind="text: version"></span>
+                                                                                </td>
+                                                                                <td align="left" width="300px" style="min-width:200px;">
+                                                                                    <span data-bind="text: scheduledDate"></span>
+                                                                                </td>
+
+                                                                                <td align="left" width="180px" style="min-width:140px;">
+                                                                                    <!-- ko if: expiring() == true -->
+                                                                                    <span data-bind="text: 'Expiring at ' + expirationDate"></span>
+                                                                                    <!-- /ko -->
+                                                                                </td>
+                                                                                <td align="left" width="35px" style="min-width:35px;">
+                                                                                    <!-- ko if: type() == 'Linked Page' -->
+                                                                                    <button class="btn-integrity-check" type="button" data-toggle="modal" data-bind="click: runIntegrityCheck, attr: {'data-target': '#dlgICheck_'+uniqueID}">
+                                                                                        <img src="/Images/integritycheck-16.png" />
+                                                                                    </button>
+                                                                                    <!-- /ko -->
+                                                                                </td>
+                                                                                <!-- /ko -->
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                <div class="error-status" style="display: none;" data-bind="visible: error() != null">
+                                                                    <span class="message-error" data-bind="text: error"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="section">
+                                                                <!-- ko if: associatedAssets().length > 0 -->
+                                                                <div>
+                                                                    <span class="ms-descriptiontext" data-bind="html: page.resultsMessage"></span>
+                                                                </div>
+                                                                <div class="related-content" data-bind="fadeVisible: page.draftFilesLoaded" style="display: none;">
+                                                                    <h4>Related Content:</h4>
+                                                                    <table cellspacing="0" cellpadding="0" width="100%" height="100%" border="0">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td align="center" id="bodyText" valign="top">
+                                                                                    <table width="100%" border="0" cellspacing="0" class="ms-descriptiontext">
+                                                                                        <tbody data-bind="foreach: { data: content.parent.typesOfContent }">
+                                                                                            <!-- ko if: content.associatedAssets.index.type()[$data] != null -->
+                                                                                            <!-- Content Type Heading-->
+                                                                                            <tr class="cateogry">
+                                                                                                <td>
+                                                                                                    <h4><i data-bind="attr: { 'class': content.parent.getIcon($data) }"></i> <span data-bind="text: $data+'s'"></span></h4>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td>
+                                                                                                    <div data-bind="foreach: { data: content.associatedAssets.index.type()[$data], beforeRemove: page.fadeIn }">
+                                                                                                        <table width="100%" border="0" cellspacing="0" class="ms-descriptiontext">
+                                                                                                            <tbody>
+                                                                                                                <tr class="page-info" data-bind="css: {'warning-status': hasPublishedVersion, 'error-status': !hasPublishedVersion || type == 'Broken Link', 'info-status': publishInFuture() }">
+                                                                                                                    <!-- ko if: type() != 'Broken Link' -->
+                                                                                                                    <td>
+                                                                                                                        <input type="checkbox" data-bind="attr: {value: url, datatype: type}, checked: selected, click: select" />
+                                                                                                                    </td>
+                                                                                                                    <!-- /ko -->
+                                                                                                                    <td width="50%">
+                                                                                                                        <!-- ko if: type() != 'Broken Link' -->
+                                                                                                                        <span data-bind="text: title, attr: { 'title': 'Audience: ' + audience + '\x0AService Area: ' + serviceArea}"></span>
+                                                                                                                        <a data-bind="attr: { href: url }" target="_blank"><i class="fa fa-info-circle"></i></a>
+                                                                                                                        <i class="fa fa-pencil-square-o" style="display: none" data-bind="visible: checkedOutTo != '', attr: {'title': 'Checked out to: ' + checkedOutTo}"></i>
+                                                                                                                        <!-- /ko -->
+                                                                                                                        <!-- ko if: type() == 'Broken Link' -->
+                                                                                                                        <i data-bind="attr: { 'class': statusIcon + ' message-error' }"></i>
+                                                                                                                        <a disabled="disabled" style="text-decoration: none" data-bind=""><span data-bind="text: title"></span></a>
+                                                                                                                        <!-- /ko -->
+                                                                                                                    </td>
+                                                                                                                    <!-- ko if: type() != 'Broken Link' -->
+                                                                                                                    <td align="left" width="180px" style="min-width:140px;">
+                                                                                                                        <span data-bind="text: publishingStatus"></span>
+                                                                                                                    </td>
+                                                                                                                    <td align="left" width="40px" style="min-width:40px;">
+                                                                                                                        <span data-bind="text: version"></span>
+                                                                                                                    </td>
+                                                                                                                    <td align="left" width="300px" style="min-width:200px;">
+                                                                                                                        <span data-bind="text: scheduledDate"></span>
+                                                                                                                    </td>
+
+                                                                                                                    <td align="left" width="180px" style="min-width:140px;">
+                                                                                                                        <!-- ko if: expiring() == true -->
+                                                                                                                        <span data-bind="text: 'Expiring at ' + expirationDate"></span>
+                                                                                                                        <!-- /ko -->
+                                                                                                                    </td>
+                                                                                                                    <td align="left" width="35px" style="min-width:35px;">
+                                                                                                                        <!-- ko if: type() == 'Linked Page' -->
+                                                                                                                        <button class="btn-integrity-check" type="button" data-toggle="modal" data-bind="click: runIntegrityCheck, attr: {'data-target': '#dlgICheck_'+uniqueID}">
+                                                                                                                            <img src="/Images/integritycheck-16.png" />
+                                                                                                                        </button>
+                                                                                                                        <!-- /ko -->
+                                                                                                                    </td>
+                                                                                                                    <!-- /ko -->
+                                                                                                                </tr>
+                                                                                                            </tbody>
+                                                                                                        </table>
+                                                                                                        <div class="error-status" style="display: none;" data-bind="visible: error() != null">
+                                                                                                            <span class="message-error" data-bind="text: error"></span>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <!-- Content Type -->
+                                                                                            <!-- /ko -->
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                <!-- /ko -->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <!-- /ko -->
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /ko -->
+                <!-- end of page-details-->
+            </div>
+            <!-- section -->
+        </div>
+        <!-- pages accordion -->
+    </div>
+</div>
+
